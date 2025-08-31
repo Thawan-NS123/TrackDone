@@ -1,0 +1,23 @@
+{
+  "name": "trackdone",
+  "version": "1.0.0",
+  "description": "Senac Projeto TCC",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Thawan-NS123/TrackDone.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Thawan-NS123/TrackDone/issues"
+  },
+  "homepage": "https://github.com/Thawan-NS123/TrackDone#readme",
+  "dependencies": {
+    "fastify": "^5.5.0",
+    "tsx": "^4.20.5"
+  }
+}
