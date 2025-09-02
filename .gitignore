@@ -1,1 +1,3 @@
 node_modules/
+/backend/prisma/generated
+/backend/prisma/migrations
