@@ -68,10 +68,11 @@ export async function authenticateUser(
     if (!user) {
       return reply.status(401).send({ error: 'Erro ao autenticar usuário' });
     }
-
     const isPasswordValid: boolean = await verifyPassword(password, user.password);
     if (!isPasswordValid) return reply.status(401).send({ error: 'Authentication failed, user not valid.' });
-    return reply.status(200).send(user);
+    const { password: bodyPassword, ...userWithoutPassword } = user;
+
+    return reply.status(200).send(userWithoutPassword);
   } catch (error) {
     return reply.status(500).send({ error: 'Erro ao autenticar usuário.', errorMessage: error });
   }
@@ -99,7 +100,7 @@ export async function createUser(request: FastifyRequest, reply: FastifyReply): 
   } catch (error: any) {
     if (error.code === 'P2002') {
       // Código de erro do prisma que indica violação de PK já cadastrada
-      return reply.status(409).send({ error: 'CPF já cadastrado.' });
+      return reply.status(409).send({ error: 'Email ou CPF já cadastrados.' });
     }
     return reply.status(500).send({ error: error });
   }
@@ -110,6 +111,7 @@ export async function updateUser(request: FastifyRequest, reply: FastifyReply): 
   const body = request.body as any;
 
   try {
+    const passwordHashed: string = await hashPassword(body.password);
     const user = await prismaInstance.user.update({
       where: { id },
       data: {
@@ -120,10 +122,12 @@ export async function updateUser(request: FastifyRequest, reply: FastifyReply): 
         gender: body.gender,
         position: body.position,
         email: body.email,
-        password: body.password,
+        password: passwordHashed,
       },
     });
-    return reply.send(user);
+
+    const { password, ...userWithoutPassword } = user;
+    return reply.send(userWithoutPassword);
   } catch (error: any) {
     if (error.code === 'P2025') {
       return reply.status(404).send({ error: 'Usuário não encontrado.' });
