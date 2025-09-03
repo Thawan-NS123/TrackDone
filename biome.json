@@ -17,7 +17,8 @@
       "recommended": true,
       "correctness": {
         "noUnusedImports": "warn",
-        "noUnusedFunctionParameters": "warn"
+        "noUnusedFunctionParameters": "off",
+        "noUnusedVariables": "off"
       },
       "suspicious": {
         "noExplicitAny": "off"

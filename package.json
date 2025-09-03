@@ -4,9 +4,8 @@
   "description": "Senac Projeto TCC",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start:api": "tsx watch backend/src/index.ts",
-    "migrate-db": "npx prisma migrate dev --name init"
+    "start:database": "cd backend && npx prisma migrate dev --name init"
   },
   "repository": {
     "type": "git",

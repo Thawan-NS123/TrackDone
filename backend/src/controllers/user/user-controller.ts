@@ -71,7 +71,6 @@ export async function authenticateUser(
 
     const isPasswordValid: boolean = await verifyPassword(password, user.password);
     if (!isPasswordValid) return reply.status(401).send({ error: 'Authentication failed, user not valid.' });
-
     return reply.status(200).send(user);
   } catch (error) {
     return reply.status(500).send({ error: 'Erro ao autenticar usuário.', errorMessage: error });

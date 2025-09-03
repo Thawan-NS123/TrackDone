@@ -1,15 +1,18 @@
-import type { FastifyRequest, FastifyReply } from 'fastify';
+/* Services */
 import { prismaInstance } from '../../prisma';
+/* Interfaces */
+import type { FastifyRequest, FastifyReply } from 'fastify';
 import type { Task } from '../../models/task-model';
 
 export async function getAllTasks(request: FastifyRequest, reply: FastifyReply): Promise<Task[]> {
   try {
-    const { idResponsible, dataInicial, dataFinal } = request.query as any;
-    const where: { idResponsible?: string; createdAt?: Record<string, Date> } = {};
+    const { idResponsible, dataInicial, dataFinal, status } = request.query as any;
+    const where: { idResponsible?: string; createdAt?: Record<string, Date>; status?: Record<string, string> } = {};
 
     if (idResponsible) {
       where.idResponsible = idResponsible;
     }
+
     if (dataInicial && dataFinal) {
       where.createdAt = {
         gte: new Date(dataInicial),
@@ -17,9 +20,14 @@ export async function getAllTasks(request: FastifyRequest, reply: FastifyReply):
       };
     }
 
+    if (status) {
+      where.status = status;
+    }
+
     const tasks = await prismaInstance.task.findMany({ where });
     return reply.status(200).send(tasks);
   } catch (error) {
+    console.log(error);
     return reply.status(500).send({ error: 'Erro ao buscar tarefas.' });
   }
 }
@@ -36,7 +44,7 @@ export async function getTaskById(request: FastifyRequest, reply: FastifyReply):
     }
     return reply.send(task);
   } catch (error) {
-    return reply.status(500).send({ error: 'Erro ao buscar tarefa.' });
+    return reply.status(500).send({ error: 'Erro ao buscar tarefa.', errorMessage: error });
   }
 }
 

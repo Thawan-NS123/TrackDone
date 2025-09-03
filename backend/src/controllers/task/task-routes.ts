@@ -6,6 +6,6 @@ export async function taskRoutes(app: FastifyInstance): Promise<void> {
   app.put('/:id', updateTask);
   app.delete('/:id', deleteTask);
 
-  app.get('/todos', getAllTasks);
+  app.get('', getAllTasks);
   app.get('/:id', getTaskById);
 }
