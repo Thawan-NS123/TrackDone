@@ -3,12 +3,14 @@ import type { FastifyRequest, FastifyReply } from 'fastify';
 import type { User } from '../../models/user-model';
 import type { Task } from '../../../generated';
 /* Services */
-import { prismaInstance } from '../../prisma';
 import { hashPassword, verifyPassword } from '../../utils/utils.service';
+import { type UserMethods, UserRepository } from '../../repositories/user-repositories';
+
+const userService: UserMethods = new UserRepository();
 
 export async function getAllUsers(request: FastifyRequest, reply: FastifyReply): Promise<User[]> {
   try {
-    const users = await prismaInstance.user.findMany({ include: { tasks: true } });
+    const users = await userService.getUsers();
 
     const usersWithoutPassword = users.map(({ password, ...rest }) => rest);
     return reply.send(usersWithoutPassword);
@@ -19,11 +21,11 @@ export async function getAllUsers(request: FastifyRequest, reply: FastifyReply):
 
 export async function getUserWithMostTasks(request: FastifyRequest, reply: FastifyReply): Promise<any> {
   try {
-    const users = await prismaInstance.user.findMany({ include: { tasks: true } });
+    const users = await userService.getUsers();
 
     const usersTasks: { name: string; id: string; taskCount: number; tasks: Task[] } = users.reduce(
       (acc: any, user) => {
-        acc.push({ name: user.name, id: user.id, taskCount: user.tasks.length, tasks: user.tasks });
+        acc.push({ name: user.name, id: user.id, taskCount: user.tasks?.length, tasks: user.tasks });
         return acc;
       },
       [],
@@ -39,13 +41,12 @@ export async function getUserById(request: FastifyRequest, reply: FastifyReply):
   const { id } = request.params as { id: string };
 
   try {
-    const user = await prismaInstance.user.findUnique({
-      where: { id },
-      include: { tasks: true },
-    });
+    const user = await userService.getUserById(id);
+
     if (!user) {
       return reply.status(404).send({ error: 'Usuário não encontrado.' });
     }
+
     return reply.send(user);
   } catch (error) {
     return reply.status(500).send({ error: 'Erro ao buscar usuário.', errorMessage: error });
@@ -60,18 +61,17 @@ export async function authenticateUser(
   if (!email || !password) {
     return reply.status(400).send({ error: 'Email e senha são obrigatórios.' });
   }
-  try {
-    const user = await prismaInstance.user.findUnique({
-      where: { email },
-    });
 
+  try {
+    const user = await userService.getUserByEmail(email);
     if (!user) {
       return reply.status(401).send({ error: 'Erro ao autenticar usuário' });
     }
+
     const isPasswordValid: boolean = await verifyPassword(password, user.password);
     if (!isPasswordValid) return reply.status(401).send({ error: 'Authentication failed, user not valid.' });
-    const { password: bodyPassword, ...userWithoutPassword } = user;
 
+    const { password: bodyPassword, ...userWithoutPassword } = user;
     return reply.status(200).send(userWithoutPassword);
   } catch (error) {
     return reply.status(500).send({ error: 'Erro ao autenticar usuário.', errorMessage: error });
@@ -82,18 +82,7 @@ export async function createUser(request: FastifyRequest, reply: FastifyReply): 
   const body = request.body as User;
   try {
     const passwordHashed: string = await hashPassword(body.password);
-    const user = await prismaInstance.user.create({
-      data: {
-        name: body.name,
-        phone: body.phone,
-        cpf: body.cpf,
-        birthDate: new Date(body.birthDate),
-        gender: body.gender,
-        position: body.position,
-        email: body.email,
-        password: passwordHashed,
-      },
-    });
+    const user = await userService.createUser(body, passwordHashed);
     const { password, ...userWithoutPassword } = user;
 
     return reply.status(201).send(userWithoutPassword);
@@ -112,19 +101,7 @@ export async function updateUser(request: FastifyRequest, reply: FastifyReply): 
 
   try {
     const passwordHashed: string = await hashPassword(body.password);
-    const user = await prismaInstance.user.update({
-      where: { id },
-      data: {
-        name: body.name,
-        phone: body.phone,
-        cpf: body.cpf,
-        birthDate: body.birthDate ? new Date(body.birthDate) : undefined,
-        gender: body.gender,
-        position: body.position,
-        email: body.email,
-        password: passwordHashed,
-      },
-    });
+    const user = await userService.updateUser(body, id, passwordHashed);
 
     const { password, ...userWithoutPassword } = user;
     return reply.send(userWithoutPassword);
