@@ -1,8 +1,9 @@
-/* Services */
-import { prismaInstance } from '../../prisma';
 /* Interfaces */
+import { type TaskMethods, TaskRepository } from '../../repositories/task-repositories';
 import type { FastifyRequest, FastifyReply } from 'fastify';
 import type { Task } from '../../models/task-model';
+
+const TaskService: TaskMethods = new TaskRepository();
 
 export async function getAllTasks(request: FastifyRequest, reply: FastifyReply): Promise<Task[]> {
   try {
@@ -24,10 +25,9 @@ export async function getAllTasks(request: FastifyRequest, reply: FastifyReply):
       where.status = status;
     }
 
-    const tasks = await prismaInstance.task.findMany({ where });
+    const tasks = await TaskService.getTasks(where);
     return reply.status(200).send(tasks);
   } catch (error) {
-    console.log(error);
     return reply.status(500).send({ error: 'Erro ao buscar tarefas.' });
   }
 }
@@ -35,9 +35,7 @@ export async function getAllTasks(request: FastifyRequest, reply: FastifyReply):
 export async function getTaskById(request: FastifyRequest, reply: FastifyReply): Promise<Task> {
   const { id } = request.params as { id: string };
   try {
-    const task = await prismaInstance.task.findUnique({
-      where: { id },
-    });
+    const task = await TaskService.getTask(id);
 
     if (!task) {
       return reply.status(404).send({ error: 'Tarefa não encontrada.' });
@@ -51,17 +49,8 @@ export async function getTaskById(request: FastifyRequest, reply: FastifyReply):
 export async function createTask(request: FastifyRequest, reply: FastifyReply): Promise<Task> {
   const body = request.body as any;
   try {
-    const task = await prismaInstance.task.create({
-      data: {
-        title: body.title,
-        description: body.description,
-        responsible: body.responsible,
-        status: body.status,
-        dueDate: body.dueDate ? new Date(body.dueDate) : undefined,
-        priority: body.priority ?? false,
-        idResponsible: body.idResponsible || null,
-      },
-    });
+    const task = await TaskService.createTask(body);
+
     return reply.status(201).send(task);
   } catch (error) {
     if (error && (error as any).code === 'P2003') {
@@ -75,18 +64,8 @@ export async function updateTask(request: FastifyRequest, reply: FastifyReply): 
   const { id } = request.params as { id: string };
   const body = request.body as any;
   try {
-    const task = await prismaInstance.task.update({
-      where: { id },
-      data: {
-        title: body.title,
-        description: body.description,
-        responsible: body.responsible,
-        status: body.status,
-        dueDate: body.dueDate ? new Date(body.dueDate) : undefined,
-        priority: body.priority,
-        idResponsible: body.idResponsible,
-      },
-    });
+    const task = await TaskService.updateTask(body, id);
+
     return reply.send(task);
   } catch (error: any) {
     if (error.code === 'P2025') {
@@ -99,9 +78,7 @@ export async function updateTask(request: FastifyRequest, reply: FastifyReply): 
 export async function deleteTask(request: FastifyRequest, reply: FastifyReply): Promise<void> {
   const { id } = request.params as { id: string };
   try {
-    await prismaInstance.task.delete({
-      where: { id },
-    });
+    await TaskService.deleteTask(id);
 
     return reply.send({ message: 'Tarefa excluída com sucesso.' });
   } catch (error: any) {

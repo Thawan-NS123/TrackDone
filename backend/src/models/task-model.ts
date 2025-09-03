@@ -1,12 +1,12 @@
 export interface Task {
-  id: string
-  title: string
-  description: string
-  responsible: string
-  status: string
-  dueDate: string
-  priority: boolean
-  createdAt: string
-  updatedAt: string
-  idResponsible: string
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  title: string;
+  description: string | null;
+  responsible: string | null;
+  status: string | null;
+  dueDate: Date | null;
+  priority: boolean;
+  idResponsible: string;
 }
