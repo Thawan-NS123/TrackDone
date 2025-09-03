@@ -1,28 +1,37 @@
+/* Interfaces */
 import type { FastifyRequest, FastifyReply } from 'fastify';
-import crypt from 'bcryptjs';
-import { prismaInstance } from '../../prisma';
 import type { User } from '../../models/user-model';
-
-function validateUser(body: User): string[] {
-  const errors: string[] = [];
-  if (!body.name || typeof body.name !== 'string') errors.push('Nome é obrigatório.');
-  if (!body.phone || typeof body.phone !== 'string') errors.push('Telefone é obrigatório.');
-  if (!body.cpf || typeof body.cpf !== 'string') errors.push('CPF é obrigatório.');
-  if (!body.birthDate || Date.parse(body.birthDate)) errors.push('Data de nascimento inválida.');
-  if (!body.gender || typeof body.gender !== 'string') errors.push('Gênero é obrigatório.');
-  if (!body.position || typeof body.position !== 'string') errors.push('Cargo é obrigatório.');
-  if (!body.email || typeof body.email !== 'string') errors.push('Email é obrigatório.');
-  if (!body.password || typeof body.password !== 'string') errors.push('Senha é obrigatória.');
-  return errors;
-}
+import type { Task } from '../../../generated';
+/* Services */
+import { prismaInstance } from '../../prisma';
+import { hashPassword, verifyPassword } from '../../utils/utils.service';
 
 export async function getAllUsers(request: FastifyRequest, reply: FastifyReply): Promise<User[]> {
   try {
-    const users = await prismaInstance.user.findMany();
+    const users = await prismaInstance.user.findMany({ include: { tasks: true } });
 
-    return reply.send(users);
+    const usersWithoutPassword = users.map(({ password, ...rest }) => rest);
+    return reply.send(usersWithoutPassword);
   } catch (error) {
-    return reply.status(500).send({ error: 'Erro ao buscar usuários.' });
+    return reply.status(500).send({ error: 'Erro ao buscar usuários.', errorMessage: error });
+  }
+}
+
+export async function getUserWithMostTasks(request: FastifyRequest, reply: FastifyReply): Promise<any> {
+  try {
+    const users = await prismaInstance.user.findMany({ include: { tasks: true } });
+
+    const usersTasks: { name: string; id: string; taskCount: number; tasks: Task[] } = users.reduce(
+      (acc: any, user) => {
+        acc.push({ name: user.name, id: user.id, taskCount: user.tasks.length, tasks: user.tasks });
+        return acc;
+      },
+      [],
+    );
+
+    reply.send(usersTasks);
+  } catch (error) {
+    return reply.status(500).send({ error: 'Erro ao buscar usuários.', errorMessage: error });
   }
 }
 
@@ -39,7 +48,7 @@ export async function getUserById(request: FastifyRequest, reply: FastifyReply):
     }
     return reply.send(user);
   } catch (error) {
-    return reply.status(500).send({ error: 'Erro ao buscar usuário.' });
+    return reply.status(500).send({ error: 'Erro ao buscar usuário.', errorMessage: error });
   }
 }
 
@@ -60,23 +69,19 @@ export async function authenticateUser(
       return reply.status(401).send({ error: 'Erro ao autenticar usuário' });
     }
 
-    const isPasswordValid: boolean = await crypt.compare(password, user.password);
+    const isPasswordValid: boolean = await verifyPassword(password, user.password);
     if (!isPasswordValid) return reply.status(401).send({ error: 'Authentication failed, user not valid.' });
 
     return reply.status(200).send(user);
   } catch (error) {
-    return reply.status(500).send({ error: 'Erro ao autenticar usuário.' });
+    return reply.status(500).send({ error: 'Erro ao autenticar usuário.', errorMessage: error });
   }
 }
 
 export async function createUser(request: FastifyRequest, reply: FastifyReply): Promise<User> {
   const body = request.body as User;
-  //   const errors = validateUser(body);
-  //   if (errors.length > 0) {
-  //     return reply.status(400).send({ errors });
-  //   }
   try {
-    const passwordHashed: string = await crypt.hash(body.password, 8);
+    const passwordHashed: string = await hashPassword(body.password);
     const user = await prismaInstance.user.create({
       data: {
         name: body.name,
@@ -89,10 +94,10 @@ export async function createUser(request: FastifyRequest, reply: FastifyReply): 
         password: passwordHashed,
       },
     });
+    const { password, ...userWithoutPassword } = user;
 
-    return reply.status(201).send(user);
+    return reply.status(201).send(userWithoutPassword);
   } catch (error: any) {
-    console.log(error);
     if (error.code === 'P2002') {
       // Código de erro do prisma que indica violação de PK já cadastrada
       return reply.status(409).send({ error: 'CPF já cadastrado.' });
