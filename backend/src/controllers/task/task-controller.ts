@@ -92,7 +92,7 @@ export async function updateTask(request: FastifyRequest, reply: FastifyReply): 
     if (error.code === 'P2025') {
       return reply.status(404).send({ error: 'Tarefa não encontrada.' });
     }
-    return reply.status(500).send({ error: 'Erro ao editar tarefa.' });
+    return reply.status(500).send({ error: 'Erro ao editar tarefa.', errorMessage: error });
   }
 }
 
@@ -108,6 +108,6 @@ export async function deleteTask(request: FastifyRequest, reply: FastifyReply): 
     if (error.code === 'P2025') {
       return reply.status(404).send({ error: 'Tarefa não encontrada.' });
     }
-    return reply.status(500).send({ error: 'Erro ao excluir tarefa.' });
+    return reply.status(500).send({ error: 'Erro ao excluir tarefa.', errorMessage: error });
   }
 }

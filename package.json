@@ -4,8 +4,8 @@
   "description": "Senac Projeto TCC",
   "main": "index.js",
   "scripts": {
-    "start:api": "tsx watch backend/src/index.ts",
-    "start:database": "cd backend && npx prisma migrate dev --name init"
+    "start:database": "cd backend && npx prisma migrate dev --name init",
+    "start:api": "tsx watch backend/src/index.ts"
   },
   "repository": {
     "type": "git",
