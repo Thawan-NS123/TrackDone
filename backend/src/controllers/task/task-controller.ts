@@ -1,16 +1,30 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { prismaInstance } from "../../prisma";
+import { Task } from "../../models/task-model";
 
-export async function getAllTasks(request: FastifyRequest, reply: FastifyReply) {
+export async function getAllTasks(request: FastifyRequest, reply: FastifyReply): Promise<Task[]> {
     try {
-        const tasks = await prismaInstance.task.findMany();
+        const { idResponsible, dataInicial, dataFinal } = (request.query as any);
+        let where: { idResponsible?: string, createdAt?: Record<string, Date>} = {};
+
+        if (idResponsible) {
+            where.idResponsible = idResponsible;
+        }
+        if (dataInicial && dataFinal) {
+            where.createdAt = {
+                gte: new Date(dataInicial),
+                lte: new Date(dataFinal)
+            };
+        }
+
+        const tasks = await prismaInstance.task.findMany({ where });
         return reply.status(200).send(tasks);
     } catch (error) {
         return reply.status(500).send({ error: "Erro ao buscar tarefas." });
     }
 }
 
-export async function getTaskById(request: FastifyRequest, reply: FastifyReply) {
+export async function getTaskById(request: FastifyRequest, reply: FastifyReply): Promise<Task> {
     const { id } = (request.params as { id: string });
     try {
         const task = await prismaInstance.task.findUnique({
@@ -26,7 +40,7 @@ export async function getTaskById(request: FastifyRequest, reply: FastifyReply) 
     }
 }
 
-export async function createTask(request: FastifyRequest, reply: FastifyReply) {
+export async function createTask(request: FastifyRequest, reply: FastifyReply): Promise<Task> {
     const body = request.body as any;
     try {
         const task = await prismaInstance.task.create({
@@ -49,7 +63,7 @@ export async function createTask(request: FastifyRequest, reply: FastifyReply) {
     }
 }
 
-export async function updateTask(request: FastifyRequest, reply: FastifyReply) {
+export async function updateTask(request: FastifyRequest, reply: FastifyReply): Promise<Task> {
     const { id } = (request.params as { id: string });
     const body = request.body as any;
     try {
@@ -71,6 +85,22 @@ export async function updateTask(request: FastifyRequest, reply: FastifyReply) {
             return reply.status(404).send({ error: "Tarefa não encontrada." });
         }
         return reply.status(500).send({ error: "Erro ao editar tarefa." });
+    }
+}
+
+export async function deleteTask(request: FastifyRequest, reply: FastifyReply) {
+    const { id } = (request.params as { id: string });
+    try {
+        await prismaInstance.task.delete({
+            where: { id },
+        });
+
+        return reply.send({ message: "Tarefa excluída com sucesso." });
+    } catch (error: any) {
+        if (error.code === "P2025") {
+            return reply.status(404).send({ error: "Tarefa não encontrada." });
+        }
+        return reply.status(500).send({ error: "Erro ao excluir tarefa." });
     }
 }
 
