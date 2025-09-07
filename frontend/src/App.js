@@ -1,12 +1,7 @@
-import Header from "./components/HeaderComponent/Header";
-import Home from "./pages/home/home";
+import AppRoutes from './AppRoutes';
+
 function App() {
-  return (
-    <>
-      <Header />
-      <Home />
-    </>
-  );
+  return <AppRoutes />;
 }
 
 export default App;

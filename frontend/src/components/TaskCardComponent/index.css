@@ -1,0 +1,50 @@
+.task-card {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.task-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  color: #333;
+}
+
+.task-date {
+  font-size: 14px;
+  color: #555;
+  margin: 0;
+}
+
+.task-date.today {
+  color: #e74c3c; /* vermelho para "Hoje" */
+  font-weight: bold;
+}
+
+.task-responsible {
+  font-size: 13px;
+  color: #888;
+  margin-top: auto;
+}
+
+/* Indicador circular no canto superior direito */
+.status-indicator {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 14px;
+  height: 14px;
+  background-color: #3498db; /* azul padrão */
+  border-radius: 50%;
+}
+
+.status-indicator.priority {
+  background-color: #e74c3c; /* vermelho para prioridade */
+}

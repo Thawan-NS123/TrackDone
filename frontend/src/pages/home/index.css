@@ -1,0 +1,51 @@
+/* Área principal da página */
+
+body {
+  margin: 0;
+  background-color: #ffffff;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Card principal da tela */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 40px 60px;
+  background-color: #fff;
+  min-height: 100vh;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+  padding-top: 100px;
+}
+
+/* Cabeçalho da lista */
+.header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Botão de adicionar tarefa */
+.btn {
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #27ae60;
+}
+
+/* Lista de tarefas */
+.task-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+  width: 100%;
+  /* 🔹 garante que a grid se espalhe */
+}

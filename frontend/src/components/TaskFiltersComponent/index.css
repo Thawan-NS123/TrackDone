@@ -1,0 +1,52 @@
+.filters-container {
+  width: 95%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-end;
+  background-color: #fff;
+  padding: 20px 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+}
+
+.field-group,
+.date-range {
+  display: flex;
+  flex-direction: column;
+}
+
+.field-group label,
+.date-range label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+input,
+select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  min-width: 180px;
+}
+
+/* Botão com estilo do header */
+.btn-search {
+  background: linear-gradient(90deg, #2E86AA, #1B4F72);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s ease, background 0.2s ease;
+  height: 40px;
+}
+
+.btn-search:hover {
+  transform: scale(1.05);
+  background: linear-gradient(90deg, #1B4F72, #2E86AA);
+}
