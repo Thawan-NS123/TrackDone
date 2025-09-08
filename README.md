@@ -128,3 +128,28 @@ Espera-se que o software:
       -> Integrar diferentes setores e gerações de forma harmônica
 
 ---
+
+
+## 🚀 Como Rodar o Projeto Localmente
+
+1. Clone o repositório:
+```bash
+git clone https://github.com/Thawan-NS123/TrackDone.git
+
+2. Instale as dependencias:
+npm install
+
+3. Inicie o servidor de desenvolvimento:
+ npm run dev
+
+---
+Scripts e Ferramentas
+---
+
+Configurações definidas nos arquivos:
+
+. gitignore
+
+. biome.json
+
+. tsconfig.json
