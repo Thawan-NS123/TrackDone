@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import Report from './pages/relatorio'; // automaticamente pega index.js
 import Home from './pages/home';        // idem
 import Header from './components/HeaderComponent'
+import Colaborador from './pages/colaborador'
 
 export default function AppRoutes() {
   return (
