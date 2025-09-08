@@ -92,6 +92,7 @@ Na tela inicial, o usuário poderá:
 - ➕ Adicionar novas tarefas;
 - 📆 Acessar um calendário de atividades;
 - 🚩 Visualizar tarefas **prioritárias**, **pendentes** e **concluídas**.
+  
 
   <img width="276" height="605" alt="image" src="https://github.com/user-attachments/assets/7ffa0965-279c-4748-8978-eb8e0646002b" />
 
@@ -102,18 +103,27 @@ Na tela inicial, o usuário poderá:
 
 Aqui o empresário verá:
 
-- 📊 Gráficos com desempenho por colaborador;
-- 🔍 Informações que ajudam a identificar pontos fortes e áreas a melhorar.
+- 📊 A quantidade de tarefas realizadas pelos usuários;
+- 🔍 A produtividade individual de cada usuário do grupo.
 
 Esses dados são essenciais para **tomadas de decisão estratégicas**.
 
-![Imagem do WhatsApp de 2025-05-26 à(s) 20 39 10_0ae35ef2](https://github.com/user-attachments/assets/88f889b9-1630-49ec-be6d-d465cec1cfd9)
+<img width="296" height="647" alt="image" src="https://github.com/user-attachments/assets/53795cc7-278f-412f-920f-b558797e59be" />
+
 
 ---
 
 ## ✅ Conclusão
 
-O TaskFlow é uma ferramenta simples, porém poderosa, para **organizar tarefas e acompanhar a produtividade** da sua empresa.  
-Com ele, fica mais fácil planejar, executar e melhorar processos com base em dados reais.
+Espera-se que o software:
+
+• Atinja os objetivos iniciais do projeto
+
+• Sirva como ferramenta estratégica para empresas que buscam:
+
+      -> Fortalecer a comunicação interna
+      -> Reduzir retrabalhos
+      -> Fomentar um ambiente organizacional mais colaborativo
+      -> Integrar diferentes setores e gerações de forma harmônica
 
 ---
