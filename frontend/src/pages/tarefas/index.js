@@ -21,7 +21,7 @@ export default function Tarefas() {
     }
 
     try {
-      const res = await fetch("http://localhost:8080/tarefas", {
+      const res = await fetch("http://localhost:8080/task", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
