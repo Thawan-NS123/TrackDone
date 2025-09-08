@@ -2,7 +2,21 @@
 
 ---
 Empresas modernas enfrentam o desafio de integrar equipes de diferentes setores que, muitas vezes, trabalham de forma isolada. Além disso, a diversidade geracional dentro das organizações — Baby Boomers, Geração X, Millennials e Geração Z — impacta diretamente a forma como nos comunicamos, organizamos tarefas e colaboramos no dia a dia.
+
+**O que é o Track Done?**
+
+Track Done é uma solução desenvolvida para:
+
+• Unificar a comunicação entre setores;
+
+• Promover um ambiente colaborativo e produtivo;
+
+• Facilitar o uso para todas as gerações, com uma interface simples, intuitiva e acessível.
+
+Ao contrário de outras plataformas que concentram múltiplas funções em um único ambiente, tornando-se complexas e pouco amigáveis, o Track Done adota uma abordagem minimalista e eficiente — focando na usabilidade e na integração entre pessoas.
+
 ## 🎯 Objetivos do Aplicativo
+
 
 O **TrackDone** tem como objetivo:
 
@@ -14,18 +28,18 @@ O **TrackDone** tem como objetivo:
 
 **•	Fomentar um ambiente de trabalho mais coeso, transparente e produtivo.**
 
-Com esse aplicativo, a empresa poderá:
 
+Esse aplicativo permitirá :
 
-Isso permitirá uma gestão mais eficiente, com decisões baseadas em dados reais.
+• Uma gestão mais eficiente, com decisões baseadas em dados reais.
+• Uma comunicação simples, evitando conflitos geracionais.
+• Uma interação mais simplificada entre diferentes equipes.
 
 ---
 
 ## 👥 Partes Interessadas
 
-O público-alvo inicial são **pequenos empresários**. No entanto, a ideia é expandir o uso do TaskFlow para **médias e grandes empresas**.
 
-Este aplicativo é útil em diversos **segmentos e setores**, especialmente aqueles que precisam **gerenciar atividades em etapas sequenciais**.
 
 ### 📌 Exemplo prático
 
