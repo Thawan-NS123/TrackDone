@@ -10,67 +10,80 @@ export default function Login() {
 
   const navigate = useNavigate();
 
-  const entrarLogin = () => {
+  const entrarLogin = async () => {
     if (!email || !password) {
       alert("Por favor, preencha todos os campos!");
       return;
     }
 
     setLoadingLogin(true);
-    setTimeout(() => {
+
+    try {
+      const res = await fetch("http://localhost:8080/usuarios/autenticar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Erro ao autenticar");
+      }
+
+      navigate("/");
+    } catch (err) {
+      alert(err.message);
+    } finally {
       setLoadingLogin(false);
-      navigate("/"); // redireciona para a página de tarefas
-    }, 1500);
+    }
   };
 
   const irCadastro = () => {
     setLoadingRegister(true);
     setTimeout(() => {
       setLoadingRegister(false);
-      navigate("/colaborador"); // redireciona para colaborador
-    }, 1500);
+      navigate("/colaborador");
+    }, 500);
   };
 
   return (
-    <div className="container">
-      <div className="logo">
-        <img src="../Image/logoTrackDone.svg" alt="Logo TrackDone" />
-        <h1>
-          Track<span>Done</span>
-        </h1>
+    <main className="login-container">
+      <div className="login-logo">
+        <h1>Track<span>Done</span></h1>
         <p>Organize suas tarefas com eficiência</p>
       </div>
 
       <div className="login-form">
         <h2>Acesse sua conta</h2>
 
-        <div className="input-group">
+        <div className="login-input-group">
           <label htmlFor="email">Email</label>
           <input
             type="email"
             id="email"
-            className="input-field"
+            className="login-input-field"
             placeholder="Seu endereço de email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 
-        <div className="input-group">
+        <div className="login-input-group">
           <label htmlFor="password">Senha</label>
           <input
             type="password"
             id="password"
-            className="input-field"
+            className="login-input-field"
             placeholder="Sua senha"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
 
-        <div className="button-group">
+        <div className="login-button-group">
           <button
-            className="btn btn-login"
+            className="login-btn login-btn-login"
             type="button"
             onClick={entrarLogin}
             disabled={loadingLogin}
@@ -78,7 +91,7 @@ export default function Login() {
             {loadingLogin ? "Entrando..." : "Entrar"}
           </button>
           <button
-            className="btn btn-register"
+            className="login-btn login-btn-register"
             type="button"
             onClick={irCadastro}
             disabled={loadingRegister}
@@ -88,9 +101,9 @@ export default function Login() {
         </div>
       </div>
 
-      <div className="footer">
+      <div className="login-footer">
         <p>© 2025 TrackDone - Todos os direitos reservados</p>
       </div>
-    </div>
+    </main>
   );
 }

@@ -12,8 +12,7 @@ export default function Tarefas() {
 
   const navigate = useNavigate();
 
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!titulo.trim()) {
@@ -21,27 +20,44 @@ export default function Tarefas() {
       return;
     }
 
-    alert("Tarefa criada com sucesso!"); // COLOCAR A FUNÇÃO DE CRIAR TAREFAS
-    setTimeout(() => {
-      navigate("/")
-    }, 500);
+    try {
+      const res = await fetch("http://localhost:8080/tarefas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: titulo,
+          description: descricao,
+          responsible: responsavel,
+          status,
+          dueDate: dataEntrega,
+          priority: prioridade
+        })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Erro ao criar tarefa.");
+      }
+
+      alert("Tarefa criada com sucesso!");
+      navigate("/");
+    } catch (err) {
+      alert(err.message);
+    }
   };
 
   const handleCancelar = () => {
-      setTimeout(() => {
-        navigate("/")
-      }, 500);
+    navigate("/");
   };
 
   const handleFinalizar = () => {
-      alert("Tarefa finalizada!"); // COLOCAR A FUNÇÃO DE FINALIZAR TAREFAS
-      setTimeout(() => {
-        navigate("/")
-      }, 500);
+    alert("Tarefa finalizada!");
+    navigate("/");
   };
 
   return (
-    <div className="container">
+    <main className="tarefas-container">
       <h1>Incluir Tarefa</h1>
 
       <form onSubmit={handleSubmit}>
@@ -133,6 +149,6 @@ export default function Tarefas() {
           </div>
         </div>
       </form>
-    </div>
+    </main>
   );
 }

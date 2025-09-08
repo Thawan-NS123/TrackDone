@@ -4,14 +4,20 @@ import './index.css';
 import TaskCard from '../../components/TaskCardComponent';
 import TaskFilters from '../../components/TaskFiltersComponent';
 import Header from '../../components/HeaderComponent';
+import { useNavigate } from 'react-router-dom';
 import { FaSadTear } from 'react-icons/fa';
 export default function Home() {
   const [tarefas, setTarefas] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [filters, setFilters] = useState({});
+  const navigate = useNavigate();
+
 
   const API_URL = 'http://localhost:8080/task';
+const goToTasksRegistration = () => {
+  navigate('/tarefas');
+};
 
   useEffect(() => {
     const fetchTarefas = async () => {
@@ -48,7 +54,7 @@ export default function Home() {
       <Header/>
      <div className="header-actions">
   <h2>📋 Minhas Tarefas</h2>
-  <button className="btn">+ Incluir Tarefa</button>
+  <button className="btn" onClick={goToTasksRegistration}>+ Incluir Tarefa</button>
 </div>
 
       {/* 🔍 Filtros */}

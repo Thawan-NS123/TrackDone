@@ -14,9 +14,9 @@ export default function Header() {
 
       <nav className="nav-icons">
         <FaTasks className="icon" title="Tarefas" onClick={() => navigate('/')} />
-        <FaUser className="icon" title="Cadastro de Usuário" onClick={() => navigate('/usuarios')} />
+        <FaUser className="icon" title="Cadastro de Usuário" onClick={() => navigate('/colaborador')} />
         <FaChartLine className="icon" title="Relatórios" onClick={() => navigate('/relatorio')} />
-        <FaCog className="icon" title="Configurações" onClick={() => alert('Configurações em breve')} />
+        <FaCog className="icon" title="Configurações" onClick={() => navigate('/config')} />
       </nav>
     </header>
   );
