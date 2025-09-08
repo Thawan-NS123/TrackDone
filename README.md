@@ -108,7 +108,8 @@ Aqui o empresário verá:
 
 Esses dados são essenciais para **tomadas de decisão estratégicas**.
 
-<img width="296" height="647" alt="image" src="https://github.com/user-attachments/assets/53795cc7-278f-412f-920f-b558797e59be" />
+<img width="335" height="712" alt="image" src="https://github.com/user-attachments/assets/62581822-afb2-43fd-b99a-5093c3b8738e" />
+
 
 
 ---
