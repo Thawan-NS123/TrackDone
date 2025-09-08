@@ -72,3 +72,10 @@ O TaskFlow é uma ferramenta simples, porém poderosa, para **organizar tarefas 
 Com ele, fica mais fácil planejar, executar e melhorar processos com base em dados reais.
 
 ---
+
+## 📝 Feedbacks
+
+Muito bom nosso projeto, pessoal.  
+Parabéns pelo papel de todos. 
+— Cleidson Silva
+
