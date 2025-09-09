@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "./index.css";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './index.css';
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loadingLogin, setLoadingLogin] = useState(false);
   const [loadingRegister, setLoadingRegister] = useState(false);
 
@@ -12,26 +12,26 @@ export default function Login() {
 
   const entrarLogin = async () => {
     if (!email || !password) {
-      alert("Por favor, preencha todos os campos!");
+      alert('Por favor, preencha todos os campos!');
       return;
     }
 
     setLoadingLogin(true);
 
     try {
-      const res = await fetch("http://localhost:8080/usuarios/autenticar", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
+      const res = await fetch('http://localhost:8080/user/autenticar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || "Erro ao autenticar");
+        throw new Error(data.error || 'Erro ao autenticar');
       }
 
-      navigate("/");
+      navigate('/');
     } catch (err) {
       alert(err.message);
     } finally {
@@ -43,14 +43,16 @@ export default function Login() {
     setLoadingRegister(true);
     setTimeout(() => {
       setLoadingRegister(false);
-      navigate("/colaborador");
+      navigate('/colaborador');
     }, 500);
   };
 
   return (
     <main className="login-container">
       <div className="login-logo">
-        <h1>Track<span>Done</span></h1>
+        <h1>
+          Track<span>Done</span>
+        </h1>
         <p>Organize suas tarefas com eficiência</p>
       </div>
 
@@ -82,13 +84,8 @@ export default function Login() {
         </div>
 
         <div className="login-button-group">
-          <button
-            className="login-btn login-btn-login"
-            type="button"
-            onClick={entrarLogin}
-            disabled={loadingLogin}
-          >
-            {loadingLogin ? "Entrando..." : "Entrar"}
+          <button className="login-btn login-btn-login" type="button" onClick={entrarLogin} disabled={loadingLogin}>
+            {loadingLogin ? 'Entrando...' : 'Entrar'}
           </button>
           <button
             className="login-btn login-btn-register"
@@ -96,7 +93,7 @@ export default function Login() {
             onClick={irCadastro}
             disabled={loadingRegister}
           >
-            {loadingRegister ? "Redirecionando..." : "Cadastrar"}
+            {loadingRegister ? 'Redirecionando...' : 'Cadastrar'}
           </button>
         </div>
       </div>
