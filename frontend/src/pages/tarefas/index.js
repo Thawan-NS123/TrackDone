@@ -1,59 +1,69 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "./index.css";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './index.css';
 
 export default function Tarefas() {
-  const [titulo, setTitulo] = useState("");
-  const [descricao, setDescricao] = useState("");
-  const [responsavel, setResponsavel] = useState("");
-  const [status, setStatus] = useState("");
-  const [dataEntrega, setDataEntrega] = useState("");
+  const [titulo, setTitulo] = useState('');
+  const [descricao, setDescricao] = useState('');
+  const [status, setStatus] = useState('');
+  const [dataEntrega, setDataEntrega] = useState('');
   const [prioridade, setPrioridade] = useState(false);
-
+  const [usuarios, setUsuarios] = useState([]);
+  const [responsavel, setResponsavel] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch('http://localhost:8080/user')
+      .then((res) => res.json())
+      .then((data) => setUsuarios(data))
+      .catch(() => setUsuarios([]));
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!titulo.trim()) {
-      alert("Por favor, informe o título da tarefa.");
+      alert('Por favor, informe o título da tarefa.');
       return;
     }
 
     try {
-      const res = await fetch("http://localhost:8080/task", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const [name, idResponsible] = responsavel.split('::');
+
+      const res = await fetch('http://localhost:8080/task', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           title: titulo,
           description: descricao,
-          responsible: responsavel,
+          responsible: name || 'Sem Responsável',
           status,
           dueDate: dataEntrega,
-          priority: prioridade
-        })
+          priority: prioridade,
+          idResponsible: idResponsible,
+        }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || "Erro ao criar tarefa.");
+        throw new Error(data.error || 'Erro ao criar tarefa.');
       }
 
-      alert("Tarefa criada com sucesso!");
-      navigate("/");
+      alert('Tarefa criada com sucesso!');
+      navigate('/');
     } catch (err) {
       alert(err.message);
     }
   };
 
   const handleCancelar = () => {
-    navigate("/");
+    navigate('/');
   };
 
   const handleFinalizar = () => {
-    alert("Tarefa finalizada!");
-    navigate("/");
+    alert('Tarefa finalizada!');
+    navigate('/');
   };
 
   return (
@@ -85,38 +95,36 @@ export default function Tarefas() {
 
         <div className="form-group">
           <label htmlFor="responsavel">Responsável</label>
-          <input
-            type="text"
+          <select
             id="responsavel"
             value={responsavel}
-            onChange={(e) => setResponsavel(e.target.value)}
-            placeholder="Digite o nome do responsável"
-          />
+            onChange={(e) => {
+              setResponsavel(e.target.value);
+            }}
+          >
+            <option value="">Selecione um usuário</option>
+            {usuarios.map((user) => (
+              <option key={user.id} value={`${user.name}::${user.id}`}>
+                {user.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="form-group">
           <label htmlFor="status">Status</label>
-          <select
-            id="status"
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-          >
+          <select id="status" value={status} onChange={(e) => setStatus(e.target.value)}>
             <option value="">Selecionar</option>
-            <option value="pendente">Pendente</option>
-            <option value="andamento">Em andamento</option>
-            <option value="concluida">Concluída</option>
+            <option value="Pendente">Pendente</option>
+            <option value="Em Andamento">Em andamento</option>
+            <option value="Concluida">Concluída</option>
           </select>
         </div>
 
         <div className="row">
           <div className="form-group">
             <label htmlFor="dataEntrega">Dt. Entrega</label>
-            <input
-              type="date"
-              id="dataEntrega"
-              value={dataEntrega}
-              onChange={(e) => setDataEntrega(e.target.value)}
-            />
+            <input type="date" id="dataEntrega" value={dataEntrega} onChange={(e) => setDataEntrega(e.target.value)} />
           </div>
 
           <div className="form-group">
