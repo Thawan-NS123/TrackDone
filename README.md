@@ -135,34 +135,28 @@ Espera-se que o software:
 ---
 
 ## 🚀 Como Rodar o Projeto Localmente
-
+```` bash
 1. Clone o repositório:
 git clone https://github.com/Thawan-NS123/TrackDone.git
 
-<<<<<<< HEAD
 2. Instale as dependencias:
 npm install           # Instala as dependências
 
-3. Inicie o servidor do banco de dados
+3. Inicie o servidor do banco de dados:
 npm run start:database # Realiza a criação do banco de dados localmente e inicia as tabelas.
 
-4. Inicie o servidor da API
+4. Inicie o servidor da API:
 npm run start:api     # Inicia a API Fastify
 
-5. Abra outro terminal entre na pasta correta
+5. Abra outro terminal entre na pasta correta:
 cd frontend
+
+5. Instale as dependencias:
 npm install
 
-6. Inicie o projeto
+7. Inicie o projeto:
 npm start
-=======
-2. Instale as dependências:
-npm install
-
-3. Inicie o servidor de desenvolvimento:
-npm run dev
->>>>>>> 76f33d035d774180f53388354b8f53eecc4ce8a2
-
+````
 ---
 Scripts e Ferramentas
 ---
