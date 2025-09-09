@@ -28,11 +28,6 @@ export default function TaskFilters({ onSearch }) {
       </div>
 
       <div className="field-group">
-        <label>Colaborador:</label>
-        <input type="text" value={collaborator} onChange={e => setCollaborator(e.target.value)} />
-      </div>
-
-      <div className="field-group">
         <label>Situação:</label>
         <select value={status} onChange={e => setStatus(e.target.value)}>
           <option value="Em andamento">Em andamento</option>

@@ -7,8 +7,8 @@ const TaskService: TaskMethods = new TaskRepository();
 
 export async function getAllTasks(request: FastifyRequest, reply: FastifyReply): Promise<Task[]> {
   try {
-    const { idResponsible, dataInicial, dataFinal, status } = request.query as any;
-    const where: { idResponsible?: string; createdAt?: Record<string, Date>; status?: Record<string, string> } = {};
+    const { idResponsible, dataInicial, dataFinal, status, title } = request.query as any;
+    const where: { idResponsible?: string; title?: any; createdAt?: Record<string, Date>; status?: Record<string, string> } = {};
 
     if (idResponsible) {
       where.idResponsible = idResponsible;
@@ -23,6 +23,10 @@ export async function getAllTasks(request: FastifyRequest, reply: FastifyReply):
 
     if (status) {
       where.status = status;
+    }
+
+    if (title) {
+      where.title = { contains: title.toLowerCase() };
     }
 
     const tasks = await TaskService.getTasks(where);

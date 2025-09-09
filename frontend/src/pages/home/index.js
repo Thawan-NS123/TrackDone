@@ -13,11 +13,10 @@ export default function Home() {
   const [filters, setFilters] = useState({});
   const navigate = useNavigate();
 
-
   const API_URL = 'http://localhost:8080/task';
-const goToTasksRegistration = () => {
-  navigate('/tarefas');
-};
+  const goToTasksRegistration = () => {
+    navigate('/tarefas');
+  };
 
   useEffect(() => {
     const fetchTarefas = async () => {
@@ -28,8 +27,8 @@ const goToTasksRegistration = () => {
         // Monta query string com filtros
         const params = new URLSearchParams();
 
-        if (filters.startDate) params.append('startDate', filters.startDate);
-        if (filters.endDate) params.append('endDate', filters.endDate);
+        if (filters.startDate) params.append('dataInicial', filters.startDate);
+        if (filters.endDate) params.append('dataFinal', filters.endDate);
         if (filters.taskName) params.append('title', filters.taskName);
         if (filters.collaborator) params.append('responsible', filters.collaborator);
         if (filters.status) params.append('status', filters.status);
@@ -51,11 +50,13 @@ const goToTasksRegistration = () => {
 
   return (
     <main className="container">
-      <Header/>
-     <div className="header-actions">
-  <h2>📋 Minhas Tarefas</h2>
-  <button className="btn" onClick={goToTasksRegistration}>+ Incluir Tarefa</button>
-</div>
+      <Header />
+      <div className="header-actions">
+        <h2>📋 Minhas Tarefas</h2>
+        <button className="btn" onClick={goToTasksRegistration}>
+          + Incluir Tarefa
+        </button>
+      </div>
 
       {/* 🔍 Filtros */}
       <TaskFilters onSearch={setFilters} />
@@ -64,15 +65,15 @@ const goToTasksRegistration = () => {
       {loading ? (
         <p>Carregando tarefas...</p>
       ) : error ? (
-<p style={{ color: 'red', display: 'flex', alignItems: 'center', gap: '10px' }}>
-  Não foi possível carregar as tarefas, tente novamente mais tarde.
-  <FaSadTear color="#5dade2" size={20} />
-</p>
+        <p style={{ color: 'red', display: 'flex', alignItems: 'center', gap: '10px' }}>
+          Não foi possível carregar as tarefas, tente novamente mais tarde.
+          <FaSadTear color="#5dade2" size={20} />
+        </p>
       ) : tarefas.length === 0 ? (
         <p>Nenhuma tarefa encontrada.</p>
       ) : (
         <div className="task-list">
-          {tarefas.map(tarefa => (
+          {tarefas.map((tarefa) => (
             <TaskCard
               key={tarefa.id}
               title={tarefa.title}
