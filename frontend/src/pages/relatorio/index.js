@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Header from '../../components/HeaderComponent'
+import Header from '../../components/HeaderComponent';
 import './index.css';
 
 export default function Report() {
@@ -26,6 +26,15 @@ export default function Report() {
     setDataFinal(formatar(ultimoDia));
   }, []);
 
+  useEffect(() => {
+    fetch('http://localhost:8080/user/tasks')
+      .then((res) => res.json())
+      .then((data) => {
+        const onlyCompletedTasks = data.filter((task) => task.taskCount > 0);
+        setProdutivos(onlyCompletedTasks)
+      });
+  }, []);
+
   const buscarRelatorio = async () => {
     const params = new URLSearchParams();
     if (dataInicial) params.append('dataInicial', dataInicial);
@@ -36,20 +45,8 @@ export default function Report() {
       const data = await res.json();
       setTarefas(data);
 
-      const concluidas = data.filter(t => t.status === 'concluida');
+      const concluidas = data.filter((t) => t.status === 'Concluida');
       setConcluidas(concluidas.length);
-
-      const porColaborador = {};
-      concluidas.forEach(t => {
-        const nome = t.responsible || 'Desconhecido';
-        porColaborador[nome] = (porColaborador[nome] || 0) + 1;
-      });
-
-      const listaOrdenada = Object.entries(porColaborador)
-        .sort((a, b) => b[1] - a[1])
-        .map(([nome, qtd]) => ({ nome, qtd }));
-
-      setProdutivos(listaOrdenada);
     } catch (err) {
       console.error('Erro ao buscar relatório:', err);
     }
@@ -57,28 +54,32 @@ export default function Report() {
 
   return (
     <main className="relatorio-container">
-      <Header/>
+      <Header />
       <h2>📊 Relatórios de Produtividade</h2>
 
       <div className="filtros-relatorio">
         <label>Data do relatório:</label>
-        <input type="date" value={dataInicial} onChange={e => setDataInicial(e.target.value)} />
+        <input type="date" value={dataInicial} onChange={(e) => setDataInicial(e.target.value)} />
         <span>até</span>
-        <input type="date" value={dataFinal} onChange={e => setDataFinal(e.target.value)} />
-        <button className="btn-search" onClick={buscarRelatorio}>Buscar</button>
+        <input type="date" value={dataFinal} onChange={(e) => setDataFinal(e.target.value)} />
+        <button className="btn-search" onClick={buscarRelatorio}>
+          Buscar
+        </button>
       </div>
 
       <div className="indicador">
         <h3>Tarefas Concluídas</h3>
-        <p>{concluidas} / {tarefas.length} tarefas concluídas</p>
+        <p>
+          {concluidas} / {tarefas.length} tarefas concluídas
+        </p>
       </div>
 
       <div className="produtivos">
         <h3>Colaboradores mais produtivos</h3>
         <ul>
-          {produtivos.map((colab, index) => (
+          {produtivos.map((fun, index) => (
             <li key={index}>
-              {colab.nome}: {colab.qtd} tarefas
+              {fun.name}: {fun.taskCount} tarefas
             </li>
           ))}
         </ul>
