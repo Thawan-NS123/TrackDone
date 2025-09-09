@@ -142,10 +142,20 @@ Espera-se que o software:
 git clone https://github.com/Thawan-NS123/TrackDone.git
 
 2. Instale as dependencias:
+npm install           # Instala as dependências
+
+3. Inicie o servidor do banco de dados
+npm run start:database # Realiza a criação do banco de dados localmente e inicia as tabelas.
+
+4. Inicie o servidor da API
+npm run start:api     # Inicia a API Fastify
+
+5. Abra outro terminal entre na pasta correta
+cd frontend
 npm install
 
-3. Inicie o servidor de desenvolvimento:
- npm run dev
+6. Inicie o projeto
+npm start
 
 ---
 Scripts e Ferramentas

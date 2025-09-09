@@ -16,7 +16,7 @@ export default function TaskFilters({ onSearch }) {
     <div className="filters-container">
       <div className="date-range">
         <label>Dt. Tarefa:</label>
-        <div style={{ display: 'flex', gap: '10px' }}>
+        <div className="datas" style={{ display: 'flex', gap: '10px' }}>
           <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
           <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
         </div>
