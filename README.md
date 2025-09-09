@@ -103,14 +103,19 @@ Na tela inicial, o usuário poderá:
 
 Aqui o empresário verá:
 
-- 📊 A quantidade de tarefas realizadas pelos usuários;
-- 🔍 A produtividade individual de cada usuário do grupo.
+- 📊 A quantidade de tarefas realizadas pelos usuários;  
+- 🔍 A produtividade individual de cada usuário do grupo;  
+
+Esses relatórios não apenas mostram números, mas também ajudam a:  
+
+- 💬 Dar feedbacks em grupo e individualmente a cada profissional;  
+- 🧩 Auxiliar os usuários a identificarem seus **pontos fortes** e **pontos de melhoria**;  
+- 🤝 Promover suporte direcionado aos colaboradores que estejam atrasados em suas entregas;  
+- 🎯 Fornecer ao empresário informações estratégicas para acompanhar quem precisa de mais atenção, incentivo ou treinamento.  
 
 Esses dados são essenciais para **tomadas de decisão estratégicas**.
 
 <img width="335" height="712" alt="image" src="https://github.com/user-attachments/assets/62581822-afb2-43fd-b99a-5093c3b8738e" />
-
-
 
 ---
 
