@@ -134,18 +134,16 @@ Espera-se que o software:
 
 ---
 
-
 ## 🚀 Como Rodar o Projeto Localmente
 
 1. Clone o repositório:
-```bash
 git clone https://github.com/Thawan-NS123/TrackDone.git
 
-2. Instale as dependencias:
+2. Instale as dependências:
 npm install
 
 3. Inicie o servidor de desenvolvimento:
- npm run dev
+npm run dev
 
 ---
 Scripts e Ferramentas
@@ -153,8 +151,6 @@ Scripts e Ferramentas
 
 Configurações definidas nos arquivos:
 
-. gitignore
-
-. biome.json
-
-. tsconfig.json
+- .gitignore
+- biome.json
+- tsconfig.json
